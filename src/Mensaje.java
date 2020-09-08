@@ -6,12 +6,12 @@ public class Mensaje {
 	private int contenido;
 	public Mensaje(int contenido)
 	{
-		this.setContenido(contenido);
+		this.contenido=contenido;
 	}
 	public int getContenido() {
 		return contenido;
 	}
-	public void setContenido(int contenido) {
-		this.contenido = contenido;
+	public void Responder() {
+		contenido++;
 	}
 }
