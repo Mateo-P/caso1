@@ -32,10 +32,10 @@ public class Buffer {
 		{
 			bufferLleno=true;
 		}
-		System.out.println("El cliente envio el siguiente mensaje:" +msg.getContenido());
+		System.out.println("Envio:" +msg.getContenido());
 			bandeja.add(msg);
 		try {
-			System.out.println("esperando respuesta");
+			System.out.println("esperando...");
 			wait();
 		} catch (InterruptedException e) {
 			System.out.println("se rompio pai");
@@ -49,9 +49,13 @@ public class Buffer {
 		
 		tamaño++;
 		Mensaje tomado = bandeja.poll();
-		tomado.Responder();
-		System.out.println("mensaje respondido"+ tomado.getContenido());
-		notify();		
+		if(tomado != null)
+		{
+			tomado.Responder();
+			System.out.println("mensaje respondido"+ tomado.getContenido());
+				
+		}
+		notifyAll();		
 		
 	}
 	public boolean hayClientes(){

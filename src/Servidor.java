@@ -10,12 +10,12 @@ public class Servidor extends Thread{
 	}
 	public void run()
 	{
-		System.out.println(buff.hayClientes());
+		
 		while(buff.hayClientes())
 		{
 			buff.RetirarMsg();
 			yield();	
 		}
-		
+		System.out.println("YA NO HAY MAS CLIENTES PAI");
 	}
 }
