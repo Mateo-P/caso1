@@ -4,12 +4,12 @@ public class Main {
 private static Buffer buff;
 public static void main(String[]args )
 {
-	int numClientes=1;
-	buff = new Buffer(numClientes,50);
+	int numClientes=5;
+	buff = new Buffer(numClientes,1);
 	Cliente[] client = new Cliente[numClientes];
-	Servidor[] server = new Servidor[5];
+	Servidor[] server = new Servidor[1];
 	for (int i = 0; i < client.length; i++) {
-		client[i] = new Cliente(5, buff);
+		client[i] = new Cliente(1, buff);
 		client[i].start();
 	}
 	for (int i = 0; i < server.length; i++) {

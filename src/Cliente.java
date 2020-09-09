@@ -13,12 +13,13 @@ public class Cliente extends Thread {
 		this.buff= buff;
 	}
 
-	public void run(){
+	public void run() {
 		for (int i = 0; i < numMsgEnviados; i++) {
 			Mensaje msg= new Mensaje(i);
 			buff.enviarMsg(msg);
 		}
-
+		System.out.println("ME RETIRO PAI");
+		buff.FindelComunicado();
 	}
 
 }

@@ -1,3 +1,4 @@
+import java.lang.management.ClassLoadingMXBean;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -6,14 +7,14 @@ public class Buffer {
 	// ATRIBUTOS
 	//--------------------------------
 	private static int tamaño;
-	private int numClientes;
-	private boolean bufferLleno = Boolean.FALSE;
+	private static int numClientes;
+	private static boolean bufferLleno = Boolean.FALSE;
 	public Buffer(int numClientes,int tamaño)
 	{
 		this.numClientes=numClientes;
 		this.tamaño=tamaño;
 	}
-	private Queue<Mensaje> bandeja = new LinkedList<>();
+	private static Queue<Mensaje> bandeja = new LinkedList<>();
 	public synchronized void enviarMsg(Mensaje msg) 
 	{
 		while(bufferLleno)
@@ -27,7 +28,9 @@ public class Buffer {
 			}
 			
 		}
+	
 		tamaño--;
+
 		if(tamaño==0)
 		{
 			bufferLleno=true;
@@ -40,20 +43,27 @@ public class Buffer {
 		} catch (InterruptedException e) {
 			System.out.println("se rompio pai");
 		}
-		System.out.println("termino pai");
+		
+	}
+	public synchronized void FindelComunicado()
+	{
 		numClientes--;
 	}
-	
 	public synchronized void RetirarMsg() 
 	{
 		
 		tamaño++;
+
 		Mensaje tomado = bandeja.poll();
 		if(tomado != null)
 		{
 			tomado.Responder();
-			System.out.println("mensaje respondido"+ tomado.getContenido());
+			System.out.println("Respuesta: "+ tomado.getContenido());
 				
+		}
+		if(bufferLleno)
+		{
+			bufferLleno=false;
 		}
 		notifyAll();		
 		
