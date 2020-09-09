@@ -15,11 +15,12 @@ public class Cliente extends Thread {
 
 	public void run() {
 		for (int i = 0; i < numMsgEnviados; i++) {
-			Mensaje msg= new Mensaje(i);
+			Mensajes msg= new Mensajes(i);
 			buff.enviarMsg(msg);
+			try {sleep(1000);} catch (InterruptedException e) {}
 		}
 		System.out.println("ME RETIRO PAI");
 		buff.FindelComunicado();
 	}
-
+	
 }

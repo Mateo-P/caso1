@@ -1,10 +1,10 @@
 
-public class Mensaje {
+public class Mensajes {
 	//--------------------------------
 	// ATRIBUTOS
 	//--------------------------------
 	private int contenido;
-	public Mensaje(int contenido)
+	public Mensajes(int contenido)
 	{
 		this.contenido=contenido;
 	}

@@ -14,8 +14,9 @@ public class Buffer {
 		this.numClientes=numClientes;
 		this.tamaño=tamaño;
 	}
-	private static Queue<Mensaje> bandeja = new LinkedList<>();
-	public synchronized void enviarMsg(Mensaje msg) 
+	private static Queue<Mensajes> bandeja = new LinkedList<>();
+	
+	public synchronized void enviarMsg(Mensajes msg) 
 	{
 		while(bufferLleno)
 		{
@@ -54,7 +55,7 @@ public class Buffer {
 		
 		tamaño++;
 
-		Mensaje tomado = bandeja.poll();
+		Mensajes tomado = bandeja.poll();
 		if(tomado != null)
 		{
 			tomado.Responder();
@@ -65,7 +66,7 @@ public class Buffer {
 		{
 			bufferLleno=false;
 		}
-		notifyAll();		
+		notify();		
 		
 	}
 	public boolean hayClientes(){

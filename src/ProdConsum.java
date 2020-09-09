@@ -8,17 +8,17 @@ public class ProdConsum extends Thread{
 	public static int bufferSize; 	
 	public static Object monitor = new Object();	
 	public static int clientesActivos = 0;
-	
+
 	//VARIABLES DE THREAD	
-	
+
 	private boolean consumidor;
 	private LinkedList<Mensaje> mensajesCliente;	
-	
+
 	public ProdConsum(boolean esConsumidor) {
 		consumidor = esConsumidor;
 		mensajesCliente = null;
 	}
-	
+
 	public ProdConsum(int numeroMensajes) {
 		consumidor = false;
 		mensajesCliente = new LinkedList<Mensaje>();
@@ -26,25 +26,25 @@ public class ProdConsum extends Thread{
 			mensajesCliente.add(new Mensaje("mensaje cualquiera id" + i + "-" + this.getId()));			
 		}		
 	}
-	
+
 	@Override
 	public void run() {
 		while(true) {
 			if (consumidor){	consumir();
 			}else {		producir();	}
-			
+
 			if(clientesActivos == 0 && pilaMensajesEspera.size() == 0) {
 				break;
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	public void consumir() {
-		
+
 		synchronized (monitor) {
-			
+
 			if(pilaMensajesEspera.size()!=0) {
 				Mensaje m = pilaMensajesEspera.pop();
 				m.responder("resp X - por server" + this.getId() + " quedan " + pilaMensajesEspera.size() + " en el buffer");
@@ -56,9 +56,9 @@ public class ProdConsum extends Thread{
 			}			
 		}		
 	}
-	
+
 	public void producir() {
-		
+
 		synchronized (monitor) {
 			if(pilaMensajesEspera.size() >= bufferSize) {
 				try {monitor.wait();//el buffer esta lleno debe esperar
@@ -72,9 +72,9 @@ public class ProdConsum extends Thread{
 			}			
 		}		
 	}
-	
+
 	public static void main(String[] args) throws InterruptedException {
-		
+
 		//leer de archivo
 		int numServidores = 20;
 		int numClientes = 100;
@@ -84,16 +84,16 @@ public class ProdConsum extends Thread{
 		ProdConsum obj = new ProdConsum(true);
 		obj.bufferSize = tamanioBuffer;
 		obj.clientesActivos = numClientes;
-		
-		
-		
+
+
+
 		Thread[] hilos = new Thread[numClientes + numServidores];
-		
+
 		long ini = System.currentTimeMillis();
-		
+
 		for (int i = 0; i < hilos.length; i++) {
 			Runnable runnable = null;
-			
+
 			if(i < numServidores) {//revisar 
 				runnable = new ProdConsum(true);
 			}else {
@@ -107,29 +107,29 @@ public class ProdConsum extends Thread{
 			hilos[i].join();
 		}
 		long  fin = System.currentTimeMillis() - ini;	
-		
+
 		System.out.println(mensajesRespondidos.size() + " mensajes respondidos de " + (numClientes*numeroMensajesXCliente) + " generados");
 		System.out.println("tiempo total: " + ((double)fin/1000) + " segundos");
 	}	
-	
+
 }
 
 class Mensaje{
 	private String query;
 	private String answer;
-	
+
 	public Mensaje(String query) {
 		this.query = query;
 	}
-	
+
 	public void responder(String s) {
 		this.answer = s;
 	}
-	
+
 	public String getQuery() {
 		return query;
 	}
-	
+
 	public String getAnswer() {
 		return answer;
 	}
