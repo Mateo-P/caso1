@@ -17,7 +17,7 @@ public class Cliente extends Thread {
 		for (int i = 0; i < numMsgEnviados; i++) {
 			Mensajes msg= new Mensajes(i);
 			buff.enviarMsg(msg);
-			try {sleep(1000);} catch (InterruptedException e) {}
+			try {sleep(100);} catch (InterruptedException e) {}
 		}
 		System.out.println("ME RETIRO PAI");
 		buff.FindelComunicado();
